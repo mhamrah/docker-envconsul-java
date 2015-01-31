@@ -1,3 +1,0 @@
-#!/bin/bash
-
-/usr/bin/envconsul -consul=$(route -n | grep 'UG[ \t ]' | awk '{print $2}'):8500 -config /etc/envconsul-config.hcl $*

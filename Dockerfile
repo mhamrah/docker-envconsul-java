@@ -1,15 +1,14 @@
-FROM dockerfile/java:oracle-java8
+FROM mhamrah/envconsul
 
 MAINTAINER Michael Hamrah <m@hamrah.com>
 
-ADD envconsul-config.hcl /etc/envconsul-config.hcl
-ADD envconsul-launch /usr/bin/envconsul-launch
-
-RUN chmod +x /usr/bin/envconsul-launch
-
-RUN \
-  curl -sL -o /tmp/consul.tar.gz https://github.com/hashicorp/envconsul/releases/download/v0.3.0/envconsul_0.3.0_linux_amd64.tar.gz && \
-  tar -xzvf /tmp/consul.tar.gz -C /usr/bin/ --strip-components=1 && \
-  rm -rf /tmp/consul.tar.gz
+RUN apt-get update && \
+  apt-get install -y wget net-tools netcat && \
+  wget -q --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u31-b13/jre-8u31-linux-x64.tar.gz && \
+  mkdir /opt/jdk && \
+  tar -zxf jre-8u31-linux-x64.tar.gz -C /opt/jdk && \
+  update-alternatives --install /usr/bin/java java /opt/jdk/jre1.8.0_31/bin/java 100 && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* *.gz
 
 
